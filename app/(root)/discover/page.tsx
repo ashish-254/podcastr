@@ -1,7 +1,7 @@
 import React from "react";
 
 const DiscoverPage = () => {
-  return <div>Discover Page</div>;
+  return <h1 className="text-20 font-bold text-white">Discover Page</h1>;
 };
 
 export default DiscoverPage;
