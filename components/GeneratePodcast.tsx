@@ -167,24 +167,22 @@ const useGeneratePodcast = ({
         },
         body: JSON.stringify({
           input: voicePrompt,
-          voice: "en-US-JennyNeural",
+          voice: voiceType || "en-US-JennyNeural",
         }),
       });
-      console.log("Status:", response.status);
-      console.log("Content-Type:", response.headers.get("content-type"));
 
       const blob = await response.blob();
-      //testing
-      console.log("Blob size:", blob.size);
-      console.log("Blob type:", blob.type);
+      // //testing
+      // console.log("Blob size:", blob.size);
+      // console.log("Blob type:", blob.type);
 
-      const url = URL.createObjectURL(blob);
+      // const url = URL.createObjectURL(blob);
 
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "test.mp3";
-      a.click();
-      //testing
+      // const a = document.createElement("a");
+      // a.href = url;
+      // a.download = "test.mp3";
+      // a.click();
+      // //testing
 
       const fileName = `podcast-${uuidv4()}.mp3`;
       const file = new File([blob], fileName, { type: "audio/mpeg" });
@@ -212,9 +210,9 @@ const GeneratePodcast = (props: GeneratePodcastProps) => {
   const { isGenerating, generatePodcast } = useGeneratePodcast(props);
 
   return (
-    <div>
+    <div className="flex flex-col gap-2.5">
       <div className="flex flex-col gap-2.5">
-        <Label className="text-16 font-bold text-white-1">
+        <Label className="text-16 font-bold text-white-1 text-md">
           AI Prompt to generate Podcast
         </Label>
         <Textarea
@@ -225,10 +223,11 @@ const GeneratePodcast = (props: GeneratePodcastProps) => {
           onChange={(e) => props.setVoicePrompt(e.target.value)}
         />
       </div>
-      <div className="mt-5 w-full max-w-[200px]">
+      <div className="mt-8 w-full max-w-[200px]">
         <Button
           type="submit"
-          className="text-16 bg-orange-1 py-4 font-bold text-white-1"
+          // className="text-16 bg-orange-500 py-4 font-bold text-white-1"
+          className="text-16 bg-orange-500 py-4 font-extrabold text-white-1 transition-all duration-500 hover:bg-black"
           onClick={generatePodcast}
         >
           {isGenerating ? (

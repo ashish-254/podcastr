@@ -46,8 +46,62 @@ import GeneratePodcast from "@/components/GeneratePodcast";
 import GenerateThumbnail from "@/components/GenerateThumbnail";
 import { Loader } from "lucide-react";
 import { Id } from "@/convex/_generated/dataModel";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { useRouter } from "next/navigation";
 
-const voiceCategories = ["alloy", "shimmer", "nova", "echo", "fable", "onyx"];
+// const voiceCategories = ["alloy", "shimmer", "nova", "echo", "fable", "onyx"];
+const voiceCategories = [
+  {
+    label: "Neerja (Female)",
+    value: "en-IN-NeerjaNeural",
+  },
+  {
+    label: "Prabhat (Male)",
+    value: "en-IN-PrabhatNeural",
+  },
+  {
+    label: "Jenny (Female)",
+    value: "en-US-JennyNeural",
+  },
+  {
+    label: "Aria (Female)",
+    value: "en-US-AriaNeural",
+  },
+  {
+    label: "Ana (Female)",
+    value: "en-US-AnaNeural",
+  },
+  {
+    label: "Emma (Female)",
+    value: "en-US-EmmaNeural",
+  },
+  {
+    label: "Michelle (Female)",
+    value: "en-US-MichelleNeural",
+  },
+  {
+    label: "Guy (Male)",
+    value: "en-US-GuyNeural",
+  },
+  {
+    label: "Andrew (Male)",
+    value: "en-US-AndrewNeural",
+  },
+  {
+    label: "Brian (Male)",
+    value: "en-US-BrianNeural",
+  },
+  {
+    label: "Christopher (Male)",
+    value: "en-US-ChristopherNeural",
+  },
+  {
+    label: "Eric (Male)",
+    value: "en-US-EricNeural",
+  },
+];
+
 const formSchema = z.object({
   podcastTitle: z
     .string()
@@ -58,6 +112,7 @@ const formSchema = z.object({
 });
 
 const CreatePodcastPage = () => {
+  const router = useRouter();
   const [imagePrompt, setImagePrompt] = useState("");
   const [audioStorageId, setAudioStorageId] = useState<Id<"_storage"> | null>(
     null,
@@ -75,6 +130,7 @@ const CreatePodcastPage = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const createPodcast = useMutation(api.podcast.createPodcast);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -83,8 +139,36 @@ const CreatePodcastPage = () => {
     },
   });
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
-    toast.info("clicked on submit of Create Podcast page");
+  async function onSubmit(data: z.infer<typeof formSchema>) {
+    // toast.info("clicked on submit of Create Podcast page");
+    try {
+      setIsSubmitting(true);
+      if (!audioUrl || !imageUrl || !voiceType) {
+        toast.info("Please genrate audio and image");
+        setIsSubmitting(false);
+        throw new Error("Please generate audio and image");
+      }
+      const podcast = await createPodcast({
+        podcastTitle: data.podcastTitle,
+        podcastDescription: data.podcastDescription,
+        audioUrl,
+        imageUrl,
+        voiceType,
+        imagePrompt,
+        voicePrompt,
+        views: 0,
+        audioDuration,
+        audioStorageId: audioStorageId!,
+        imageStorageId: imageStorageId!,
+      });
+      toast.success("Podcast created");
+      setIsSubmitting(false);
+      router.push("/");
+    } catch (error) {
+      console.error(error);
+      toast.error("Error");
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -111,34 +195,30 @@ const CreatePodcastPage = () => {
                       className="input-class focus-visible:ring-orange-300"
                     />
                   </FormControl>
-                  <FormMessage className="text-white-1" />
+                  <FormMessage className="text-red-400" />
                 </FormItem>
               )}
             />
 
             <div className="flex flex-col gap-2.5">
-              <label className="text-white-1 text-16 font-bold">
+              <label className="text-16 font-bold text-white-1">
                 Select AI voice
               </label>
               <Select onValueChange={(value) => setVoiceType(value)}>
-                <SelectTrigger
-                  className={cn(
-                    "text-16 w-full border-none bg-black-1 text-gray-5",
-                  )}
-                >
+                <SelectTrigger className={cn("text-16 w-full input-class")}>
                   <SelectValue
                     placeholder="Select AI Voice"
                     className="placeholder:text-gray text-white-1"
                   />
                 </SelectTrigger>
                 <SelectContent className="text-16 border-none bg-black-1 font-bold text-white-1 focus:ring-orange-300">
-                  {voiceCategories.map((category) => (
+                  {voiceCategories.map(({ label, value }, index) => (
                     <SelectItem
-                      key={category}
-                      value={category}
+                      key={index}
+                      value={value}
                       className="capitalize focus:bg-orange-300"
                     >
-                      {category}
+                      {label}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -173,7 +253,7 @@ const CreatePodcastPage = () => {
             />
           </div>
 
-          <div className="flex flex-col pt-10">
+          <div className="flex flex-col pt-10 gap-3.5">
             <GeneratePodcast
               setAudioStorageId={setAudioStorageId}
               setAudio={setAudioUrl}
@@ -183,7 +263,13 @@ const CreatePodcastPage = () => {
               setVoicePrompt={setVoicePrompt}
               setAudioDuration={setAudioDuration}
             />
-            <GenerateThumbnail />
+            <GenerateThumbnail
+              setImage={setImageUrl}
+              setImageStorageId={setImageStorageId}
+              image={imageUrl}
+              imagePrompt={imagePrompt}
+              setImagePrompt={setImagePrompt}
+            />
 
             <div>
               <Button

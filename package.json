@@ -12,6 +12,7 @@
     "@andresaya/edge-tts": "^1.8.0",
     "@clerk/nextjs": "^7.4.1",
     "@hookform/resolvers": "^5.4.0",
+    "@huggingface/inference": "^4.13.18",
     "@radix-ui/react-slot": "^1.2.4",
     "@xixixao/uploadstuff": "^0.0.5",
     "class-variance-authority": "^0.7.1",
