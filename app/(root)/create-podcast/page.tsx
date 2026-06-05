@@ -140,35 +140,35 @@ const CreatePodcastPage = () => {
   });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    // toast.info("clicked on submit of Create Podcast page");
-    try {
-      setIsSubmitting(true);
-      if (!audioUrl || !imageUrl || !voiceType) {
-        toast.info("Please genrate audio and image");
-        setIsSubmitting(false);
-        throw new Error("Please generate audio and image");
-      }
-      const podcast = await createPodcast({
-        podcastTitle: data.podcastTitle,
-        podcastDescription: data.podcastDescription,
-        audioUrl,
-        imageUrl,
-        voiceType,
-        imagePrompt,
-        voicePrompt,
-        views: 0,
-        audioDuration,
-        audioStorageId: audioStorageId!,
-        imageStorageId: imageStorageId!,
-      });
-      toast.success("Podcast created");
-      setIsSubmitting(false);
-      router.push("/");
-    } catch (error) {
-      console.error(error);
-      toast.error("Error");
-      setIsSubmitting(false);
-    }
+    toast.info("clicked on submit of Create Podcast page");
+    // try {
+    //   setIsSubmitting(true);
+    //   if (!audioUrl || !imageUrl || !voiceType) {
+    //     toast.info("Please genrate audio and image");
+    //     setIsSubmitting(false);
+    //     throw new Error("Please generate audio and image");
+    //   }
+    //   const podcast = await createPodcast({
+    //     podcastTitle: data.podcastTitle,
+    //     podcastDescription: data.podcastDescription,
+    //     audioUrl,
+    //     imageUrl,
+    //     voiceType,
+    //     imagePrompt,
+    //     voicePrompt,
+    //     views: 0,
+    //     audioDuration,
+    //     audioStorageId: audioStorageId!,
+    //     imageStorageId: imageStorageId!,
+    //   });
+    //   toast.success("Podcast created");
+    //   setIsSubmitting(false);
+    //   router.push("/");
+    // } catch (error) {
+    //   console.error(error);
+    //   toast.error("Error");
+    //   setIsSubmitting(false);
+    // }
   }
 
   return (

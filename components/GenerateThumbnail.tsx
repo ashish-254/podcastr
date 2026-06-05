@@ -52,6 +52,7 @@ const GenerateThumbnail = ({
   // used to generate image from AI
   const generateImage = async () => {
     try {
+      setIsImageLoading(true);
       const response = await fetch("/api/generate-thumbnail", {
         method: "POST",
         headers: {
@@ -66,9 +67,11 @@ const GenerateThumbnail = ({
       }
       const blob = await response.blob();
       handleImage(blob, `thumbnail-${uuidv4()}.png`);
+      setIsImageLoading(false);
     } catch (error) {
       console.error(error);
       toast.error("Error generating thumbnail");
+      setIsImageLoading(false);
     }
   };
 
@@ -128,7 +131,7 @@ const GenerateThumbnail = ({
           </div>
           <div className="mt-8 w-full max-w-[200px]">
             <Button
-              type="submit"
+              type="button"
               className="text-16 bg-orange-500 py-4 font-extrabold text-white-1 transition-all duration-500 hover:bg-black"
               onClick={generateImage}
             >

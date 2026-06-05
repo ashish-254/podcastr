@@ -5,7 +5,7 @@ import { podcastData } from "@/constants";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 const Home = () => {
-  const trendingPodcasts = useQuery(api.podcast.getTrendingPodasts);
+  const trendingPodcasts = useQuery(api.podcast.getTrendingPodcasts);
   return (
     <div className="px-5 mt-9 flex flex-col gap-9">
       <section className="flex flex-col gap-5">
