@@ -1,14 +1,18 @@
 "use client";
 import { sidebarLinks } from "@/app/(root)";
 import { cn } from "@/lib/utils";
+import { useClerk, useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
+import { Button } from "./ui/button";
 
 const LeftSidebar = () => {
   const pathName = usePathname();
   const router = useRouter();
+  const { user, isSignedIn } = useUser();
+  const { signOut } = useClerk();
   return (
     <section className="left_sidebar">
       <nav className="flex flex-col gap-6">
@@ -42,6 +46,22 @@ const LeftSidebar = () => {
           );
         })}
       </nav>
+      {isSignedIn ? (
+        <div className="flex-center w-full pb-14 max-lg:px-4 lg:pr-8">
+          <Button
+            className="text-16 w-full bg-orange-400 font-extrabold"
+            onClick={() => signOut(() => router.push("/"))}
+          >
+            Log Out
+          </Button>
+        </div>
+      ) : (
+        <div className="flex-center w-full pb-14 max-lg:px-4 lg:pr-8">
+          <Button asChild className="text-16 w-full bg-orange-400 font-extrabold">
+            <Link href="/sign-in">Sign in</Link>
+          </Button>
+        </div>
+      )}
     </section>
   );
 };
