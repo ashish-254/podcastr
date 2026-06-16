@@ -28,6 +28,7 @@ const PodcastDetailPlayer = ({
   const { setAudio } = useAudio();
   const [isDeleting, setIsDeleting] = useState(false);
   const deletePodcast = useMutation(api.podcast.deletePodcast);
+  const updatePodcastViews = useMutation(api.podcast.updatePodcastViews);
 
   const handleDelete = async () => {
     try {
@@ -40,7 +41,7 @@ const PodcastDetailPlayer = ({
     }
   };
 
-  const handlePlay = () => {
+  const handlePlay = async () => {
     setAudio({
       title: podcastTitle,
       audioUrl,
@@ -48,6 +49,11 @@ const PodcastDetailPlayer = ({
       author,
       podcastId,
     });
+    try {
+      await updatePodcastViews({ podcastId: podcastId });
+    } catch (error) {
+      console.error("Error while updating the views", error);
+    }
   };
 
   if (!imageUrl || !authorImageUrl) return <LoaderSpinner />;
