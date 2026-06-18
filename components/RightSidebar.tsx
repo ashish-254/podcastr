@@ -8,7 +8,6 @@ import Carousel from "./Carousel";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useRouter } from "next/navigation";
-// import { useAudio } from "@/providers/AudioProvider";
 import { cn } from "@/lib/utils";
 import Header from "./Header";
 
@@ -20,14 +19,9 @@ const RightSidebar = () => {
 
   const router = useRouter();
 
-  // const { audio } = useAudio();
-
   return (
     <section
-      // className={cn("right_sidebar h-[calc(100vh-5px)]", {
-      //   "h-[calc(100vh-140px)]": audio?.audioUrl,
-      // })}
-      className={cn("right_sidebar h-[calc(100vh-5px)]")}
+     className={cn("right_sidebar h-[calc(100vh-5px)]")}
     >
       {isSignedIn && (
         <Link href={`/profile/${user?.id}`} className="flex gap-3 pb-12">

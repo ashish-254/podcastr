@@ -36,9 +36,28 @@ html {
   .text-32 {
     @apply text-[32px] leading-normal;
   }
-  .input-class {
+  /* .input-class {
     @apply text-[16px] leading-normal placeholder:text-[16px] leading-normal bg-[#15171C] rounded-[6px] placeholder:text-[#71788B] border-none text-[#71788B];
   }
+  .input-class::placeholder {
+    color: #71788b;
+    size: "16px";
+  } */
+  .input-class {
+    font-size: 16px;
+    line-height: normal;
+    background-color: #15171c;
+    border-radius: 6px;
+    border: none;
+    color: #71788b;
+  }
+
+  .input-class:placeholder-shown {
+    color: #ffffff;
+    font-size: 16px;
+    line-height: normal;
+  }
+
   .podcast_grid {
     @apply grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4;
   }
