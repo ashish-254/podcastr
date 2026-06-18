@@ -10,10 +10,15 @@ import { sidebarLinks } from "@/constants";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { Button } from "./ui/button";
+import { useClerk, useUser } from "@clerk/nextjs";
 
 const MobileNav = () => {
   const pathname = usePathname();
+  const { user, isSignedIn } = useUser();
+  const router = useRouter();
+  const { signOut } = useClerk();
 
   return (
     <section>
@@ -51,7 +56,8 @@ const MobileNav = () => {
                         className={cn(
                           "flex gap-3 items-center py-4 max-lg:px-4 justify-start",
                           {
-                            "bg-nav-focus border-r-4 border-orange-400": isActive,
+                            "bg-nav-focus border-r-4 border-orange-400":
+                              isActive,
                           },
                         )}
                       >
@@ -69,6 +75,25 @@ const MobileNav = () => {
               </nav>
             </SheetClose>
           </div>
+          {isSignedIn ? (
+            <div className="flex-center w-full pb-14 max-lg:px-4 lg:pr-8">
+              <Button
+                className="text-16 w-full text-white-1 bg-orange-500 font-extrabold"
+                onClick={() => signOut(() => router.push("/"))}
+              >
+                Log Out
+              </Button>
+            </div>
+          ) : (
+            <div className="flex-center w-full pb-14 max-lg:px-4 lg:pr-8">
+              <Button
+                asChild
+                className="text-16 w-full bg-orange-400 font-extrabold"
+              >
+                <Link href="/sign-in">Sign in</Link>
+              </Button>
+            </div>
+          )}
         </SheetContent>
       </Sheet>
     </section>

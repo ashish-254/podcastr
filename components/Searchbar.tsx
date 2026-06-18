@@ -22,7 +22,6 @@ const Searchbar = () => {
   return (
     <div className="relative mt-8 block">
       <Input 
-        // className="input-class py-6 pl-12 focus-visible:ring-offset-orange-400"
         className="input-class py-6 pl-12 focus-visible:ring-orange-400"
         placeholder='Search for podcasts'
         value={search}

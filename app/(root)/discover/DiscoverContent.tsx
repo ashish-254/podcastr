@@ -20,7 +20,7 @@ const DiscoverContent = () => {
     <div className="flex flex-col gap-9">
       <Searchbar />
 
-      <div className="flex flex-col gap-9">
+      <div className="flex flex-col gap-9 sm:pb-2">
         <h1 className="text-20 font-bold text-white-1">
           {!search ? "Discover Trending Podcasts" : "Search results for "}
           {search && <span className="text-white-2">{search}</span>}

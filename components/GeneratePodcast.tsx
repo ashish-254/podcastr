@@ -36,12 +36,6 @@ const useGeneratePodcast = ({
     }
 
     try {
-      // const response = await getPodcastAudio({
-      //   voice: voiceType,
-      //   input: voicePrompt,
-      // });
-
-      // const blob = new Blob([response], { type: "audio/mpeg" });
       const response = await fetch("/api/generate-audio", {
         method: "POST",
         headers: {
@@ -54,17 +48,6 @@ const useGeneratePodcast = ({
       });
 
       const blob = await response.blob();
-      // //testing
-      // console.log("Blob size:", blob.size);
-      // console.log("Blob type:", blob.type);
-
-      // const url = URL.createObjectURL(blob);
-
-      // const a = document.createElement("a");
-      // a.href = url;
-      // a.download = "test.mp3";
-      // a.click();
-      // //testing
 
       const fileName = `podcast-${uuidv4()}.mp3`;
       const file = new File([blob], fileName, { type: "audio/mpeg" });

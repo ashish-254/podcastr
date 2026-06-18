@@ -14,7 +14,6 @@ export const generateAudioAction = action({
   handler: async (_, { input, voice }) => {
     const tts = new EdgeTTS();
 
-    // await tts.synthesize(input, voice, {
     await tts.synthesize(input, "en-IN-PrabhatNeural", {
       rate: "0%",
       pitch: "0Hz",
